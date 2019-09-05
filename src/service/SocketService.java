@@ -8,24 +8,20 @@ import java.net.Socket;
 
 public class SocketService {
     private ServerSocket serverSocket;
-    private boolean isStop = false;
 
     private void receive(Webapp webapp) {
-        try {
-            while (true) {
-                if (isStop) {
-                    return;
-                }
+        while (true) {
+            try {
                 Socket socket = serverSocket.accept();
-                socket.setKeepAlive(false);
-                // socket.setSoTimeout(3000);
+                socket.setKeepAlive(true);
                 System.out.println("监听到请求：" + socket);
                 HandleService service = new HandleService(socket, webapp);
                 Thread t = new Thread(service);
                 t.start();
+            } catch (IOException e) {
+                System.out.println("监听失败，可能是端口被占用");
+                return;
             }
-        } catch (IOException e) {
-            System.out.println("监听失败，可能是端口被占用");
         }
     }
 
@@ -43,10 +39,5 @@ public class SocketService {
         } catch (IOException e) {
             System.out.println("启动失败，原因：" + e.toString());
         }
-    }
-
-    public void stop() {
-        System.out.println("系统退出");
-        this.isStop = true;
     }
 }

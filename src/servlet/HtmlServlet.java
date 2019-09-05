@@ -13,6 +13,7 @@ public class HtmlServlet {
     private static Map<String, String> htmlMap = new HashMap<>();
 
     public void service(Request request, Response response, Webapp webapp) {
+        IOService service = new IOService();
         String url = request.getUrl();
         String suffix = null;
         if (url.endsWith("/")) {
@@ -42,20 +43,33 @@ public class HtmlServlet {
 
         if (suffix == null) {
             if (html != null) {
-                response.printAll(200, html);
-            }else {
-                response.printAll(404);
+                String content = response.initContent(200, html);
+                service.write(response.getOutputStream(), content);
+            } else {
+                String content = response.initContent(404);
+                service.write(response.getOutputStream(), content);
             }
         } else {
             switch (suffix) {
                 case "css":
-                    response.printAll(200, html, "text/css");
+                    response.setContentType("text/css");
+                    String cssContent = response.initContent(200, html);
+                    service.write(response.getOutputStream(), cssContent);
                     break;
                 case "js":
-                    response.printAll(200, html, "application/x-javascript");
+                    response.setContentType("application/x-javascript");
+                    String jsContent = response.initContent(200, html);
+                    service.write(response.getOutputStream(), jsContent);
+                    break;
+                case "ico":
+                    response.setContentType("image/x-icon");
+                    String icoContent = response.initContent(200, html);
+                    service.write(response.getOutputStream(), icoContent);
                     break;
                 default:
-                    response.printAll(200, html);
+                    String defaultContent = response.initContent(200, html);
+                    service.write(response.getOutputStream(), defaultContent);
+                    break;
             }
         }
     }

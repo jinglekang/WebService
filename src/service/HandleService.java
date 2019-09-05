@@ -20,10 +20,10 @@ public class HandleService implements Runnable {
 
     private void initialization(Socket socket) {
         try {
-            Request request = new Request(socket);
-            Response response = new Response(socket);
-            String url = request.getUrl();
-
+            Request request = new Request(socket.getInputStream());
+            System.out.println(request);
+            Response response = new Response(socket.getOutputStream());
+            // String url = request.getUrl();
             // if (url.equals("/") || url.contains(".")) {
             HtmlServlet servlet = new HtmlServlet();
             servlet.service(request, response, webapp);

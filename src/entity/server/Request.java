@@ -2,23 +2,38 @@ package entity.server;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class Request {
 
+    private String url;
     private String method;
-    private String url = "";
-    private Map<String, List<String>> paramMap = new HashMap<>();
+    private InputStream inputStream;
+    private Map<String, List<String>> paramMap;
 
-    public Request(Socket socket) {
+    public Request(InputStream inputStream) {
+        this.inputStream = inputStream;
+        this.paramMap = new HashMap<>();
+        this.initRequest();
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "url='" + url + '\'' +
+                ", method='" + method + '\'' +
+                ", inputStream=" + inputStream +
+                ", paramMap=" + paramMap +
+                '}';
+    }
+
+    private void initRequest() {
         try {
-            String request = this.readRequest(socket.getInputStream(), 1024 * 1024 * 10);
+            String request = this.readRequest(this.inputStream);
             if (request != null) {
                 this.method = request.substring(0, request.indexOf(' '));
                 int start = request.indexOf("/");
@@ -65,18 +80,35 @@ public class Request {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
-    public String getContent() {
-        return "Request{" +
-                "method='" + method + '\'' +
-                ", url='" + url + '\'' +
-                ", param='" + paramMap + '\'' +
-                '}';
+    public Map<String, List<String>> getParamMap() {
+        return paramMap;
+    }
+
+    public void setParamMap(Map<String, List<String>> paramMap) {
+        this.paramMap = paramMap;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getMethod() {
         return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     public String getUrl() {
@@ -84,7 +116,7 @@ public class Request {
     }
 
     private void setParamMap(String params) {
-        Map<String, List<String>> paramMap = new HashMap<>();
+        this.paramMap = new HashMap<>();
         if (params.contains("&")) {
             String[] split = params.split("&");
             for (String param : split) {
@@ -107,7 +139,6 @@ public class Request {
             values.add(value);
             paramMap.put(key, values);
         }
-        this.paramMap = paramMap;
     }
 
     private String decode(String param) {
@@ -119,15 +150,23 @@ public class Request {
         }
     }
 
-    private String readRequest(InputStream is, int len) {
+    private String readRequest(InputStream is) {
         try {
-            byte[] buf = new byte[len];
-            StringBuilder builder = new StringBuilder();
-            int read = is.read(buf);
-            builder.append(new String(buf, 0, read));
-            return builder.toString();
+            // byte[] buf = new byte[10485760];
+            // StringBuilder builder = new StringBuilder();
+            // int read = is.read(buf);
+            // builder.append(new String(buf, 0, read));
+            // return builder.toString();
+
+            StringBuffer content = new StringBuffer(2048);
+            byte[] buffer = new byte[2048];
+            int i = -1;
+            i = inputStream.read(buffer);
+            for (int j = 0; j < i; j++) {
+                content.append((char) buffer[j]);
+            }
+            return content.toString();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

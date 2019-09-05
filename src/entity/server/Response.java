@@ -1,82 +1,68 @@
 package entity.server;
 
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.OutputStream;
 
-@SuppressWarnings("unused")
 public class Response {
-    private final String CRLF = "\r\n";
-    private final String BLANK = " ";
-    private int code;
-    private String state;
-    private String body = "";
     private String contentType = "text/html";
     private String charset = "UTF-8";
-    private Socket socket;
+    private static final String CRLF = "\r\n";
+    private static final String BLANK = " ";
+    private OutputStream outputStream;
 
-    public Response(Socket socket) {
-        this.socket = socket;
+    public Response(OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
-    /**
-     * 打印给客户端数据
-     */
-    public void print(String content) {
-        try {
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-            pw.write(content);
-            pw.flush();
-            pw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public OutputStream getOutputStream() {
+        return outputStream;
     }
 
-    public void printAll(int code) {
-        this.code = code;
-        this.updateState(code);
-        this.print(this.getContent());
+    public void setOutputStream(OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
-    public void printAll(int code, String body) {
-        this.body = body;
-        this.printAll(code);
+    public String getCharset() {
+        return charset;
     }
 
-    public void printAll(int code, String body, String contentType) {
-        this.contentType = contentType;
-        this.printAll(code, body);
-    }
-
-    public void printAll(int code, String body, String contentType, String charset) {
+    public void setCharset(String charset) {
         this.charset = charset;
-        this.printAll(code, body, contentType);
     }
 
-    public String getContent() {
-        return "HTTP/1.1" + this.BLANK + this.code + this.BLANK + this.state + this.CRLF + "Content-Type:" + this.contentType + ";charset=" + this.charset + this.CRLF + this.CRLF + this.body;
+    public String getContentType() {
+        return contentType;
     }
 
-    private void updateState(int code) {
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String initContent(int code, String body) {
+        String state = this.getState(code);
+        return "HTTP/1.1" + BLANK + code + BLANK + state + CRLF + "Content-Type:" + this.contentType + ";charset=" + this.charset + CRLF + CRLF + body;
+    }
+
+    public String initContent(int code) {
+        String state = this.getState(code);
+        return "HTTP/1.1" + BLANK + code + BLANK + state + CRLF + "Content-Type:" + this.contentType + ";charset=" + this.charset;
+    }
+
+    private String getState(int code) {
         switch (code) {
             case 200:
-                this.state = "OK";
-                break;
+                return "OK";
             case 301:
-                this.state = "Moved Permanently";
-                break;
+                return "Moved Permanently";
             case 404:
-                this.state = "Not Found";
-                break;
+                return "Not Found";
             case 503:
-                this.state = "Service Unavailable";
-                break;
+                return "Service Unavailable";
             case 504:
-                this.state = "Gateway Timeout";
-                break;
+                return "Gateway Timeout";
             case 505:
-                this.state = "HTTP Version Not Supported";
-                break;
+                return "HTTP Version Not Supported";
+            default:
+                return "";
         }
     }
 }
