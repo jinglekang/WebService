@@ -5,7 +5,7 @@ import java.util.List;
 public class Servlet {
     private String servletName;
     private String servletClass;
-    private List<Mapping> servletMapping;
+    private List<String> servletUrl;
 
     public Servlet() {
     }
@@ -26,11 +26,11 @@ public class Servlet {
         this.servletClass = servletClass;
     }
 
-    public List<Mapping> getServletMapping() {
-        return servletMapping;
+    public List<String> getServletUrl() {
+        return servletUrl;
     }
 
-    public void setServletMapping(List<Mapping> servletMapping) {
-        this.servletMapping = servletMapping;
+    public void setServletUrl(List<String> servletUrl) {
+        this.servletUrl = servletUrl;
     }
 }

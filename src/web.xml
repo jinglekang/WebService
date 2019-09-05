@@ -9,21 +9,21 @@
             <rootPath>D:\WebService\root</rootPath>
             <servletPath>D:\WebService\servlet</servletPath>
         </app>
-<!--        <servlet>-->
-<!--            <name>login</name>-->
-<!--            <class>pro.diss.servlet.IServletImpl</class>-->
-<!--            <mapping>-->
-<!--                <url>/login</url>-->
-<!--                <url>/lo</url>-->
-<!--            </mapping>-->
-<!--        </servlet>-->
-<!--        <servlet>-->
-<!--            <name>register</name>-->
-<!--            <class>pro.diss.servlet.IServletImpl</class>-->
-<!--            <mapping>-->
-<!--                <url>/register</url>-->
-<!--                <url>/re</url>-->
-<!--            </mapping>-->
-<!--        </servlet>-->
+        <servlet>
+            <name>login</name>
+            <class>servlet.LoginServlet</class>
+            <mapping>
+                <url>/login</url>
+                <url>/l</url>
+            </mapping>
+        </servlet>
+        <servlet>
+            <name>register</name>
+            <class>servlet.RegisterServlet</class>
+            <mapping>
+                <url>/register</url>
+                <url>/r</url>
+            </mapping>
+        </servlet>
     </webapp>
 </webapps>

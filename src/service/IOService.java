@@ -1,6 +1,5 @@
 package service;
 
-import entity.config.Mapping;
 import entity.config.Servlet;
 import entity.config.Webapp;
 import entity.exception.ConfigException;
@@ -13,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,17 +67,15 @@ public class IOService {
                             servlet.setServletClass(throwException(xmlServletClass, "ServletClass is null").getTextContent());
 
                             // 多映射实体对象
-                            List<Mapping> mappings = new ArrayList<>();
+                            List<String> mappings = new ArrayList<>();
                             Element xmlMappings = (Element) xmlServlet.getElementsByTagName("mapping").item(0);
                             // 开始解析一对多映射
                             NodeList xmlUrls = xmlMappings.getElementsByTagName("url");
                             for (int m = 0; m < xmlUrls.getLength(); m++) {
                                 Element xmlUrl = (Element) xmlUrls.item(m);
-                                Mapping mapping = new Mapping();
-                                mapping.setMappingUrl(throwException(xmlUrl, "Url is null").getTextContent());
-                                mappings.add(mapping);
+                                mappings.add(throwException(xmlUrl, "Url is null").getTextContent());
                             }
-                            servlet.setServletMapping(mappings);
+                            servlet.setServletUrl(mappings);
                             servlets.add(servlet);
                         }
                         webapp.setAppServlet(servlets);
@@ -110,7 +106,7 @@ public class IOService {
         }
     }
 
-    public static String readHtml(String path) {
+    public static String readStaticSource(String path) {
         File file = new File(path);
         if (file.exists() && file.isFile()) {
             try (FileInputStream fis = new FileInputStream(file)) {
@@ -127,17 +123,6 @@ public class IOService {
             }
         } else {
             return null;
-        }
-    }
-
-
-    public void write(OutputStream outputStream, String content) {
-        try {
-            outputStream.write(content.getBytes());
-            outputStream.flush();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -4,9 +4,10 @@ import entity.server.Request;
 import entity.server.Response;
 import service.PrintWrite;
 
-public class RegisterServlet implements BaseServlet {
+public class LoginServlet implements BaseServlet {
+    @Override
     public void service(Request request, Response response) {
         PrintWrite printWrite = response.getPrintWrite();
-        printWrite.write(200,"你来了");
+        printWrite.write(200, "你来了");
     }
 }

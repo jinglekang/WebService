@@ -8,11 +8,13 @@ import service.IOService;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HtmlServlet {
+public class StaticServlet implements BaseServlet {
 
     private static Map<String, String> htmlMap = new HashMap<>();
 
-    public void service(Request request, Response response, Webapp webapp) {
+    @Override
+    public void service(Request request, Response response) {
+        Webapp webapp = request.getWebapp();
         IOService service = new IOService();
         String url = request.getUrl();
         String suffix = null;
@@ -36,39 +38,33 @@ public class HtmlServlet {
             html = htmlMap.get(htmlPath);
             System.out.println("缓存文件：" + url);
         } else {
-            html = IOService.readHtml(htmlPath);
+            html = IOService.readStaticSource(htmlPath);
             htmlMap.put(htmlPath, html);
             System.out.println("加载文件：" + url);
         }
 
         if (suffix == null) {
             if (html != null) {
-                String content = response.initContent(200, html);
-                service.write(response.getOutputStream(), content);
+                response.getPrintWrite().write(200, html);
             } else {
-                String content = response.initContent(404);
-                service.write(response.getOutputStream(), content);
+                response.getPrintWrite().write(404);
             }
         } else {
             switch (suffix) {
                 case "css":
                     response.setContentType("text/css");
-                    String cssContent = response.initContent(200, html);
-                    service.write(response.getOutputStream(), cssContent);
+                    response.getPrintWrite().write(200, html);
                     break;
                 case "js":
                     response.setContentType("application/x-javascript");
-                    String jsContent = response.initContent(200, html);
-                    service.write(response.getOutputStream(), jsContent);
+                    response.getPrintWrite().write(200, html);
                     break;
                 case "ico":
                     response.setContentType("image/x-icon");
-                    String icoContent = response.initContent(200, html);
-                    service.write(response.getOutputStream(), icoContent);
+                    response.getPrintWrite().write(200, html);
                     break;
                 default:
-                    String defaultContent = response.initContent(200, html);
-                    service.write(response.getOutputStream(), defaultContent);
+                    response.getPrintWrite().write(200, html);
                     break;
             }
         }

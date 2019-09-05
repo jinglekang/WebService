@@ -1,24 +1,28 @@
 package entity.server;
 
+import service.PrintWrite;
+
 import java.io.OutputStream;
 
 public class Response {
+    // private String contentType = "";
     private String contentType = "text/html";
     private String charset = "UTF-8";
     private static final String CRLF = "\r\n";
     private static final String BLANK = " ";
-    private OutputStream outputStream;
+    private PrintWrite printWrite;
 
-    public Response(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    public Response(OutputStream printWrite) {
+        this.printWrite = new PrintWrite(printWrite);
+        this.printWrite.setResponse(this);
     }
 
-    public OutputStream getOutputStream() {
-        return outputStream;
+    public PrintWrite getPrintWrite() {
+        return printWrite;
     }
 
-    public void setOutputStream(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    public void setPrintWrite(PrintWrite printWrite) {
+        this.printWrite = printWrite;
     }
 
     public String getCharset() {

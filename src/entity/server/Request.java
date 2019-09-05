@@ -1,5 +1,7 @@
 package entity.server;
 
+import entity.config.Webapp;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -11,6 +13,7 @@ import java.util.Map;
 public class Request {
 
     private String url;
+    private Webapp webapp;
     private String method;
     private InputStream inputStream;
     private Map<String, List<String>> paramMap;
@@ -63,9 +66,11 @@ public class Request {
                         int last = request.lastIndexOf("\n");
                         if (last != -1) {
                             String params = request.substring(request.lastIndexOf("\n") + 1);
-                            String decode = this.decode(params);
-                            if (decode != null) {
-                                this.setParamMap(decode);
+                            if (params.length() > 0 && params.contains("=")) {
+                                String decode = this.decode(params);
+                                if (decode != null) {
+                                    this.setParamMap(decode);
+                                }
                             }
                         }
                         break;
@@ -111,6 +116,15 @@ public class Request {
         this.method = method;
     }
 
+
+    public Webapp getWebapp() {
+        return webapp;
+    }
+
+    public void setWebapp(Webapp webapp) {
+        this.webapp = webapp;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -152,20 +166,19 @@ public class Request {
 
     private String readRequest(InputStream is) {
         try {
-            // byte[] buf = new byte[10485760];
-            // StringBuilder builder = new StringBuilder();
-            // int read = is.read(buf);
-            // builder.append(new String(buf, 0, read));
-            // return builder.toString();
+            StringBuilder builder = new StringBuilder();
+            byte[] buf = new byte[10485760];
+            int read = is.read(buf);
+            builder.append(new String(buf, 0, read));
 
-            StringBuffer content = new StringBuffer(2048);
-            byte[] buffer = new byte[2048];
-            int i = -1;
-            i = inputStream.read(buffer);
-            for (int j = 0; j < i; j++) {
-                content.append((char) buffer[j]);
-            }
-            return content.toString();
+            // StringBuilder builder = new StringBuilder();
+            // byte[] buffer = new byte[2048];
+            // int i;
+            // i = inputStream.read(buffer);
+            // for (int j = 0; j < i; j++) {
+            //     builder.append((char) buffer[j]);
+            // }
+            return builder.toString();
         } catch (Exception e) {
             return null;
         }

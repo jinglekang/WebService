@@ -1,12 +1,15 @@
 package service;
 
 
+import entity.config.Servlet;
 import entity.config.Webapp;
 import entity.server.Request;
 import entity.server.Response;
-import servlet.HtmlServlet;
+import servlet.BaseServlet;
+import servlet.StaticServlet;
 
 import java.net.Socket;
+import java.util.List;
 
 public class HandleService implements Runnable {
 
@@ -21,16 +24,22 @@ public class HandleService implements Runnable {
     private void initialization(Socket socket) {
         try {
             Request request = new Request(socket.getInputStream());
-            System.out.println(request);
+            request.setWebapp(this.webapp);
             Response response = new Response(socket.getOutputStream());
-            // String url = request.getUrl();
-            // if (url.equals("/") || url.contains(".")) {
-            HtmlServlet servlet = new HtmlServlet();
-            servlet.service(request, response, webapp);
-            // } else {
-            //     BaseServlet servlet = new LoginServlet();
-            //     servlet.service(request, response);
-            // }
+            List<Servlet> servlets = webapp.getAppServlet();
+            for (Servlet servlet : servlets) {
+                List<String> servletUrl = servlet.getServletUrl();
+                String url = request.getUrl();
+                if (servletUrl.contains(url)) {
+                    Class ciz = Class.forName(servlet.getServletClass());
+                    BaseServlet baseServlet = (BaseServlet) ciz.newInstance();
+                    baseServlet.service(request, response);
+                    return;
+                }
+            }
+            StaticServlet servlet = new StaticServlet();
+            servlet.service(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
