@@ -1,12 +1,12 @@
 package service;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import entity.config.Mapping;
 import entity.config.Servlet;
 import entity.config.Webapp;
 import entity.exception.ConfigException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,12 +46,14 @@ public class IOService {
                         Element xmlPort = (Element) xmlApp.getElementsByTagName("port").item(0);
                         Element xmlAppIndex = (Element) xmlApp.getElementsByTagName("index").item(0);
                         Element xmlRootpath = (Element) xmlApp.getElementsByTagName("rootPath").item(0);
+                        Element xmlServletPath = (Element) xmlApp.getElementsByTagName("servletPath").item(0);
 
                         Webapp webapp = new Webapp();
                         webapp.setAppName(throwException(xmlAppName, "Name is null").getTextContent());
                         webapp.setAppDomain(throwException(xmlAppDomain, "Domain is null").getTextContent());
                         webapp.setAppPort(throwException(xmlPort, "Port is null").getTextContent());
-                        webapp.setAppRootpath(throwException(xmlRootpath, "Rootpath is null").getTextContent());
+                        webapp.setAppRootpath(throwException(xmlRootpath, "Root Path is null").getTextContent());
+                        webapp.setAppServletPath(throwException(xmlServletPath, "Servlet Path is null").getTextContent());
                         webapp.setAppIndex(throwException(xmlAppIndex, "Index is null").getTextContent());
 
                         List<Servlet> servlets = new ArrayList<>();

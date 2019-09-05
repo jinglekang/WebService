@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<webapps>
+    <webapp>
+        <app>
+            <name>毁人不倦</name>
+            <domain>pro.diss</domain>
+            <port>80</port>
+            <index>index.html</index>
+            <rootPath>D:\WebService\root</rootPath>
+            <servletPath>D:\WebService\servlet</servletPath>
+        </app>
+        <servlet>
+            <name>login</name>
+            <class>pro.diss.servlet.IServletImpl</class>
+            <mapping>
+                <url>/login</url>
+                <url>/lo</url>
+            </mapping>
+        </servlet>
+        <servlet>
+            <name>register</name>
+            <class>pro.diss.servlet.IServletImpl</class>
+            <mapping>
+                <url>/register</url>
+                <url>/re</url>
+            </mapping>
+        </servlet>
+    </webapp>
+</webapps>

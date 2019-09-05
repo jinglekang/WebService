@@ -6,6 +6,7 @@ public class Webapp {
     private String appName;
     private String appDomain;
     private String appRootpath;
+    private String appServletPath;
     private String appPort;
     private String appIndex;
     private List<Servlet> appServlet;
@@ -32,6 +33,14 @@ public class Webapp {
 
     public void setAppRootpath(String appRootpath) {
         this.appRootpath = appRootpath;
+    }
+
+    public String getAppServletPath() {
+        return appServletPath;
+    }
+
+    public void setAppServletPath(String appServletPath) {
+        this.appServletPath = appServletPath;
     }
 
     public String getAppPort() {

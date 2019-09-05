@@ -41,7 +41,11 @@ public class HtmlServlet {
         }
 
         if (suffix == null) {
-            response.printAll(200, html);
+            if (html != null) {
+                response.printAll(200, html);
+            }else {
+                response.printAll(404);
+            }
         } else {
             switch (suffix) {
                 case "css":

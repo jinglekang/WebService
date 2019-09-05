@@ -18,14 +18,14 @@ public class SocketService {
                 }
                 Socket socket = serverSocket.accept();
                 socket.setKeepAlive(false);
-                socket.setSoTimeout(3000);
+                // socket.setSoTimeout(3000);
                 System.out.println("监听到请求：" + socket);
                 HandleService service = new HandleService(socket, webapp);
                 Thread t = new Thread(service);
                 t.start();
             }
         } catch (IOException e) {
-            System.out.println("监听失败，原因：" + e.toString());
+            System.out.println("监听失败，可能是端口被占用");
         }
     }
 
