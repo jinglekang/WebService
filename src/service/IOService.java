@@ -125,4 +125,22 @@ public class IOService {
             return null;
         }
     }
+
+    public static String getHtmlErrorPage(String error) {
+        return "<!DOCTYPE html>" +
+                "<html lang='en'>" +
+                "<head>" +
+                "<meta charset='UTF-8'>" +
+                "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1'>" +
+                "<title>" + "WebService错误页面" + "</title>" +
+                "<style>body{font-family:Arial,serif;text-align:center;}</style>" +
+                "</head>" +
+                "<body>" +
+                "<h1>" +
+                error +
+                "</h1>" +
+                "</body>" +
+                "</html>";
+    }
 }

@@ -7,6 +7,6 @@ import service.PrintWrite;
 public class RegisterServlet implements BaseServlet {
     public void service(Request request, Response response) {
         PrintWrite printWrite = response.getPrintWrite();
-        printWrite.write(200,"你来了");
+        printWrite.write(request.toString());
     }
 }

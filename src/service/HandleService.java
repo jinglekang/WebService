@@ -6,8 +6,10 @@ import entity.config.Webapp;
 import entity.server.Request;
 import entity.server.Response;
 import servlet.BaseServlet;
+import servlet.ClassNotFoundServlet;
 import servlet.StaticServlet;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
@@ -27,20 +29,33 @@ public class HandleService implements Runnable {
             request.setWebapp(this.webapp);
             Response response = new Response(socket.getOutputStream());
             List<Servlet> servlets = webapp.getAppServlet();
+            boolean isStatic = false;
+            String servletClass = null;
             for (Servlet servlet : servlets) {
                 List<String> servletUrl = servlet.getServletUrl();
                 String url = request.getUrl();
                 if (servletUrl.contains(url)) {
-                    Class ciz = Class.forName(servlet.getServletClass());
-                    BaseServlet baseServlet = (BaseServlet) ciz.newInstance();
-                    baseServlet.service(request, response);
-                    return;
+                    isStatic = true;
+                    servletClass = servlet.getServletClass();
+                    break;
                 }
             }
-            StaticServlet servlet = new StaticServlet();
-            servlet.service(request, response);
 
-        } catch (Exception e) {
+            if (isStatic) {
+                try {
+                    Class ciz = Class.forName(servletClass);
+                    BaseServlet servlet = (BaseServlet) ciz.newInstance();
+                    servlet.service(request, response);
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                    System.out.println("Servlet加载失败，原因：" + e.toString());
+                    ClassNotFoundServlet servlet = new ClassNotFoundServlet();
+                    servlet.service(request, response);
+                }
+            } else {
+                StaticServlet servlet = new StaticServlet();
+                servlet.service(request, response);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

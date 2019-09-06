@@ -25,5 +25,13 @@
                 <url>/r</url>
             </mapping>
         </servlet>
+        <servlet>
+            <name>input</name>
+            <class>servlet.InputServlet</class>
+            <mapping>
+                <url>/input</url>
+                <url>/i</url>
+            </mapping>
+        </servlet>
     </webapp>
 </webapps>

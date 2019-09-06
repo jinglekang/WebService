@@ -16,15 +16,8 @@ public class PrintWrite extends PrintWriter {
         this.response = response;
     }
 
-    public void write(int code, String s) {
-        String content = response.initContent(code, s);
-        super.write(content);
-        this.flush();
-        this.close();
-    }
-
-    public void write(int code) {
-        String content = response.initContent(code);
+    public void write(String s) {
+        String content = response.initContent( s);
         super.write(content);
         this.flush();
         this.close();

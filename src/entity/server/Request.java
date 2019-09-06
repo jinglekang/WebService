@@ -29,7 +29,6 @@ public class Request {
         return "Request{" +
                 "url='" + url + '\'' +
                 ", method='" + method + '\'' +
-                ", inputStream=" + inputStream +
                 ", paramMap=" + paramMap +
                 '}';
     }

@@ -19,7 +19,7 @@ public class SocketService {
                 Thread t = new Thread(service);
                 t.start();
             } catch (IOException e) {
-                System.out.println("监听失败，可能是端口被占用");
+                System.out.println("监听失败，原因：" + e.toString());
                 return;
             }
         }
@@ -37,7 +37,7 @@ public class SocketService {
                 System.out.println("启动失败，端口填写不正确：'" + appPort + "'不是数字格式：" + e.toString());
             }
         } catch (IOException e) {
-            System.out.println("启动失败，原因：" + e.toString());
+            System.out.println("启动失败，可能是端口被占用");
         }
     }
 }
