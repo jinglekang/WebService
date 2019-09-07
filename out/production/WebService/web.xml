@@ -7,31 +7,31 @@
             <port>80</port>
             <index>index.html</index>
             <rootPath>D:\WebService\root</rootPath>
-            <servletPath>D:\WebService\servlet</servletPath>
+            <servletPath>D:\WebService\server.webServlet</servletPath>
         </app>
-        <servlet>
+        <webServlet>
             <name>login</name>
-            <class>servlet.LoginServlet</class>
+            <class>server.servlet.LoginServlet</class>
             <mapping>
                 <url>/login</url>
                 <url>/l</url>
             </mapping>
-        </servlet>
-        <servlet>
+        </webServlet>
+        <webServlet>
             <name>register</name>
-            <class>servlet.RegisterServlet</class>
+            <class>server.servlet.RegisterServlet</class>
             <mapping>
                 <url>/register</url>
                 <url>/r</url>
             </mapping>
-        </servlet>
-        <servlet>
+        </webServlet>
+        <webServlet>
             <name>input</name>
-            <class>servlet.InputServlet</class>
+            <class>server.servlet.InputServlet</class>
             <mapping>
                 <url>/input</url>
                 <url>/i</url>
             </mapping>
-        </servlet>
+        </webServlet>
     </webapp>
 </webapps>
