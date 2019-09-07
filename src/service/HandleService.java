@@ -6,8 +6,8 @@ import entity.config.Webapp;
 import entity.server.Request;
 import entity.server.Response;
 import servlet.BaseServlet;
-import servlet.ClassNotFoundServlet;
 import servlet.StaticServlet;
+import util.Utils;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -45,16 +45,29 @@ public class HandleService implements Runnable {
                 try {
                     Class ciz = Class.forName(servletClass);
                     BaseServlet servlet = (BaseServlet) ciz.newInstance();
-                    servlet.service(request, response);
+                    String method = request.getMethod();
+                    if ("GET".equals(method)) {
+                        servlet.doGet(request, response);
+
+                    } else if ("POST".equals(method)) {
+                        servlet.doPost(request, response);
+
+                    } else if ("PUT".equals(method)) {
+                        servlet.doPut(request, response);
+                    } else if ("DELETE".equals(method)) {
+                        servlet.doDelete(request, response);
+                    } else {
+                        response.getWriter().println(Utils.getHtmlErrorPage("Method Not Supported"));
+                    }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                     System.out.println("Servlet加载失败，原因：" + e.toString());
-                    ClassNotFoundServlet servlet = new ClassNotFoundServlet();
-                    servlet.service(request, response);
+                    response.getWriter().println(Utils.getHtmlErrorPage(e.toString()));
                 }
             } else {
                 StaticServlet servlet = new StaticServlet();
-                servlet.service(request, response);
+                servlet.doGet(request, response);
             }
+            // 所有请求完成，释放资源
             this.socket.close();
 
         } catch (IOException e) {

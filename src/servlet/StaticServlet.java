@@ -3,8 +3,9 @@ package servlet;
 import entity.config.Webapp;
 import entity.server.Request;
 import entity.server.Response;
-import service.IOService;
+import util.Utils;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class StaticServlet implements BaseServlet {
     private static Map<String, String> htmlMap = new HashMap<>();
 
     @Override
-    public void service(Request request, Response response) {
+    public void doGet(Request request, Response response) {
         Webapp webapp = request.getWebapp();
         String appRootpath = webapp.getAppRootpath();
         String url = request.getUrl();
@@ -40,39 +41,45 @@ public class StaticServlet implements BaseServlet {
                 html = htmlMap.get(htmlPath);
                 System.out.println("缓存文件：" + url);
             } else {
-                html = IOService.readStaticSource(htmlPath);
+                html = Utils.readStaticSource(htmlPath);
                 if (html == null) {
-                    html = IOService.readStaticSource(appRootpath + "/404.html");
+                    html = Utils.readStaticSource(appRootpath + "/404.html");
                 }
                 htmlMap.put(htmlPath, html);
                 System.out.println("加载文件：" + url);
             }
 
-
-            if (suffix == null) {
+            if (suffix == null || suffix.equals("html")) {
                 response.getWriter().println(response.initContent(html));
+            } else if (suffix.equals("css")) {
+                response.setContentType("text/css");
+                PrintWriter writer = response.getWriter();
+                writer.println(response.initContent(html));
+            } else if (suffix.equals("js")) {
+                response.setContentType("application/x-javascript");
+                response.getWriter().println(response.initContent(html));
+            } else if (Utils.isFile(suffix)) {
+                response.pushFile(new File(htmlPath));
             } else {
-                switch (suffix) {
-                    case "css":
-                        response.setContentType("text/css");
-                        PrintWriter writer = response.getWriter();
-                        writer.println(response.initContent(html));
-                        break;
-                    case "js":
-                        response.setContentType("application/x-javascript");
-                        response.getWriter().println(response.initContent(html));
-                        break;
-                    case "ico":
-                        response.setContentType("image/x-icon");
-                        response.getWriter().println(response.initContent(html));
-                        break;
-                    default:
-                        response.getWriter().println(response.initContent(html));
-                        break;
-                }
+                response.getWriter().println(html);
             }
         } else {
-            response.getWriter().println(IOService.readStaticSource(appRootpath + "/404.html"));
+            response.getWriter().println(Utils.readStaticSource(appRootpath + "/404.html"));
         }
+    }
+
+    @Override
+    public void doPost(Request request, Response response) {
+        this.doGet(request, response);
+    }
+
+    @Override
+    public void doPut(Request request, Response response) {
+
+    }
+
+    @Override
+    public void doDelete(Request request, Response response) {
+
     }
 }

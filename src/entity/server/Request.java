@@ -37,11 +37,11 @@ public class Request {
         try {
             String request = this.readRequest(this.inputStream);
             if (request != null) {
-                this.method = request.substring(0, request.indexOf(' '));
+                this.method = request.substring(0, request.indexOf(' ')).toUpperCase();
                 int start = request.indexOf("/");
                 int end = request.indexOf("HTTP") - 1;
                 String path = request.substring(start, end);
-                String requestMethod = method.toUpperCase();
+                String requestMethod = method;
                 switch (requestMethod) {
                     case "GET":
                         if (path.contains("?")) {

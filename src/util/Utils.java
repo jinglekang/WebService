@@ -1,8 +1,7 @@
-package service;
+package util;
 
 import entity.config.Servlet;
 import entity.config.Webapp;
-import entity.exception.ConfigException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,7 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IOService {
+public class Utils {
 
     /**
      * 静态方法，直接从根目录读取配置文件
@@ -86,7 +85,7 @@ public class IOService {
                     System.out.println("配置文件未找到，程序退出");
                     return null;
                 }
-            } catch (ConfigException e) {
+            } catch (RuntimeException e) {
                 e.printStackTrace();
                 System.out.println("读取配置文件异常，程序退出");
                 return null;
@@ -98,9 +97,9 @@ public class IOService {
         }
     }
 
-    private static Element throwException(Element ele, String exc) throws ConfigException {
+    private static Element throwException(Element ele, String exc) {
         if (ele == null || ele.getTextContent().length() == 0) {
-            throw new ConfigException(exc);
+            throw new RuntimeException(exc);
         } else {
             return ele;
         }
@@ -124,6 +123,22 @@ public class IOService {
         } else {
             return null;
         }
+    }
+
+    public static boolean isFile(String suffix) {
+        switch (suffix) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "gif":
+            case "bmp":
+            case "tif":
+            case "webp":
+                return true;
+            default:
+                return false;
+        }
+
     }
 
     public static String getHtmlErrorPage(String error) {

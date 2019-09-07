@@ -2,11 +2,26 @@ package servlet;
 
 import entity.server.Request;
 import entity.server.Response;
-import service.IOService;
+import util.Utils;
 
 public class ClassNotFoundServlet implements BaseServlet {
     @Override
-    public void service(Request request, Response response) {
-        response.getWriter().println(IOService.getHtmlErrorPage("Servlet Class Not Found"));
+    public void doGet(Request request, Response response) {
+        response.getWriter().println(Utils.getHtmlErrorPage("Servlet Class Not Found"));
+    }
+
+    @Override
+    public void doPost(Request request, Response response) {
+        this.doGet(request, response);
+    }
+
+    @Override
+    public void doPut(Request request, Response response) {
+
+    }
+
+    @Override
+    public void doDelete(Request request, Response response) {
+
     }
 }

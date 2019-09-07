@@ -1,5 +1,5 @@
 import entity.config.Webapp;
-import service.IOService;
+import util.Utils;
 import service.SocketService;
 
 import java.util.List;
@@ -8,7 +8,7 @@ public class Main implements Runnable {
     private Webapp webapp;
 
     public static void main(String[] args) {
-        List<Webapp> webapps = IOService.initXmlConfig();
+        List<Webapp> webapps = Utils.initXmlConfig();
         if (webapps != null) {
             for (Webapp webapp : webapps) {
                 Main main = new Main(webapp);
