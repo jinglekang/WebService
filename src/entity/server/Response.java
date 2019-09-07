@@ -1,23 +1,22 @@
 package entity.server;
 
-import service.PrintWrite;
 
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 public class Response {
     // private String contentType = "";
     private String contentType = "text/html";
     private static final String CRLF = "\r\n";
     private static final String BLANK = " ";
-    private PrintWrite printWrite;
+    private PrintWriter writer;
 
-    public Response(OutputStream printWrite) {
-        this.printWrite = new PrintWrite(printWrite);
-        this.printWrite.setResponse(this);
+    public Response(OutputStream writer) {
+        this.writer = new PrintWriter(writer, true);
     }
 
-    public PrintWrite getPrintWrite() {
-        return printWrite;
+    public PrintWriter getWriter() {
+        return writer;
     }
 
     public void setContentType(String contentType) {

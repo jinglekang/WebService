@@ -2,11 +2,12 @@ package servlet;
 
 import entity.server.Request;
 import entity.server.Response;
-import service.PrintWrite;
+
+import java.io.PrintWriter;
 
 public class RegisterServlet implements BaseServlet {
     public void service(Request request, Response response) {
-        PrintWrite printWrite = response.getPrintWrite();
-        printWrite.write(request.toString());
+        PrintWriter writer = response.getWriter();
+        writer.println(request.toString());
     }
 }

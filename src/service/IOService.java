@@ -109,18 +109,18 @@ public class IOService {
     public static String readStaticSource(String path) {
         File file = new File(path);
         if (file.exists() && file.isFile()) {
+            StringBuilder builder = new StringBuilder();
+            byte[] bytes = new byte[1024];
+            int len;
             try (FileInputStream fis = new FileInputStream(file)) {
-                StringBuilder builder = new StringBuilder();
-                byte[] bytes = new byte[1024];
-                int len;
                 while ((len = fis.read(bytes)) != -1) {
                     builder.append(new String(bytes, 0, len));
                 }
-                return builder.toString();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
+            return builder.toString();
         } else {
             return null;
         }

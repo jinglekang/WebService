@@ -5,6 +5,7 @@ import entity.server.Request;
 import entity.server.Response;
 import service.IOService;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,29 +48,31 @@ public class StaticServlet implements BaseServlet {
                 System.out.println("加载文件：" + url);
             }
 
+
             if (suffix == null) {
-                response.getPrintWrite().write(html);
+                response.getWriter().println(response.initContent(html));
             } else {
                 switch (suffix) {
                     case "css":
                         response.setContentType("text/css");
-                        response.getPrintWrite().write(html);
+                        PrintWriter writer = response.getWriter();
+                        writer.println(response.initContent(html));
                         break;
                     case "js":
                         response.setContentType("application/x-javascript");
-                        response.getPrintWrite().write(html);
+                        response.getWriter().println(response.initContent(html));
                         break;
                     case "ico":
                         response.setContentType("image/x-icon");
-                        response.getPrintWrite().write(html);
+                        response.getWriter().println(response.initContent(html));
                         break;
                     default:
-                        response.getPrintWrite().write(html);
+                        response.getWriter().println(response.initContent(html));
                         break;
                 }
             }
         } else {
-            response.getPrintWrite().write(IOService.readStaticSource(appRootpath + "/404.html"));
+            response.getWriter().println(IOService.readStaticSource(appRootpath + "/404.html"));
         }
     }
 }

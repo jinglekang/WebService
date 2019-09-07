@@ -55,6 +55,8 @@ public class HandleService implements Runnable {
                 StaticServlet servlet = new StaticServlet();
                 servlet.service(request, response);
             }
+            this.socket.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
