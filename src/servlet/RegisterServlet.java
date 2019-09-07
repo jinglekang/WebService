@@ -17,11 +17,11 @@ public class RegisterServlet implements BaseServlet {
 
     @Override
     public void doPut(Request request, Response response) {
-
+        this.doGet(request,response);
     }
 
     @Override
     public void doDelete(Request request, Response response) {
-
+        this.doGet(request,response);
     }
 }
