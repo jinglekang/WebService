@@ -1,6 +1,6 @@
-import server.entity.config.Webapp;
-import server.service.HandleService;
-import server.util.Utils;
+import entity.config.Webapp;
+import service.HandleService;
+import util.Utils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
