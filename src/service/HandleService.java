@@ -33,9 +33,6 @@ public class HandleService implements Runnable {
             Response response = new Response(this.socket.getOutputStream());
             List<WebServlet> webServlets = this.webapp.getAppWebServlet();
 
-            System.out.println(request.toString());
-            System.out.println(webapp);
-
             boolean isServlet = false;
             String servletClass = null;
 
