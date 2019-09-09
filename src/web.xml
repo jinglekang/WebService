@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<webapps>
+    <webapp>
+        <app>
+            <name>毁人不倦</name>
+            <domain>pro.diss</domain>
+            <port>80</port>
+            <index>index.html</index>
+            <rootPath>D:\WebService\root</rootPath>
+            <servletPath>D:\WebService\servlet</servletPath>
+        </app>
+        <servlet>
+            <name>login</name>
+            <class>LoginServlet</class>
+            <mapping>
+                <url>/login</url>
+                <url>/l</url>
+            </mapping>
+        </servlet>
+        <servlet>
+            <name>register</name>
+            <class>RegisterServlet</class>
+            <mapping>
+                <url>/register</url>
+                <url>/r</url>
+            </mapping>
+        </servlet>
+        <servlet>
+            <name>input</name>
+            <class>InputServlet</class>
+            <mapping>
+                <url>/input</url>
+                <url>/i</url>
+            </mapping>
+        </servlet>
+    </webapp>
+</webapps>
