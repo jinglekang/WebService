@@ -55,7 +55,7 @@ public class Utils {
                         webapp.setAppIndex(throwException(xmlAppIndex, "Index is null").getTextContent());
 
                         List<WebServlet> webServlets = new ArrayList<>();
-                        NodeList xmlServlets = (xmlWebapp.getElementsByTagName("webServlet"));
+                        NodeList xmlServlets = (xmlWebapp.getElementsByTagName("servlet"));
                         for (int s = 0; s < xmlServlets.getLength(); s++) {
                             Element xmlServlet = (Element) xmlServlets.item(s);
                             Element xmlServletName = (Element) xmlServlet.getElementsByTagName("name").item(0);

@@ -7,6 +7,15 @@ public class WebServlet {
     private String servletClass;
     private List<String> servletUrl;
 
+    @Override
+    public String toString() {
+        return "WebServlet{" +
+                "servletName='" + servletName + '\'' +
+                ", servletClass='" + servletClass + '\'' +
+                ", servletUrl=" + servletUrl +
+                '}';
+    }
+
     public String getServletName() {
         return servletName;
     }

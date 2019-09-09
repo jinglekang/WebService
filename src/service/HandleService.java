@@ -9,8 +9,11 @@ import servlet.BaseServlet;
 import servlet.StaticServlet;
 import util.Utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 
 public class HandleService implements Runnable {
@@ -29,22 +32,29 @@ public class HandleService implements Runnable {
             request.setWebapp(this.webapp);
             Response response = new Response(this.socket.getOutputStream());
             List<WebServlet> webServlets = this.webapp.getAppWebServlet();
-            boolean isStatic = false;
+
+            System.out.println(request.toString());
+            System.out.println(webapp);
+
+            boolean isServlet = false;
             String servletClass = null;
 
             for (WebServlet webServlet : webServlets) {
                 List<String> servletUrl = webServlet.getServletUrl();
                 String url = request.getUrl();
                 if (servletUrl.contains(url)) {
-                    isStatic = true;
+                    isServlet = true;
                     servletClass = webServlet.getServletClass();
                     break;
                 }
             }
 
-            if (isStatic) {
+            if (isServlet) {
                 try {
-                    Class ciz = Class.forName(servletClass);
+                    String servletPath = webapp.getAppServletPath();
+                    URL url = new File(servletPath).toURI().toURL();
+                    ClassLoader loader = new URLClassLoader(new URL[]{url});
+                    Class ciz = Class.forName(servletClass, true, loader);
                     BaseServlet servlet = (BaseServlet) ciz.newInstance();
                     String method = request.getMethod();
                     if ("GET".equals(method)) {

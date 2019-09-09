@@ -11,6 +11,19 @@ public class Webapp {
     private String appIndex;
     private List<WebServlet> appWebServlet;
 
+    @Override
+    public String toString() {
+        return "Webapp{" +
+                "appName='" + appName + '\'' +
+                ", appDomain='" + appDomain + '\'' +
+                ", appRootpath='" + appRootpath + '\'' +
+                ", appServletPath='" + appServletPath + '\'' +
+                ", appPort='" + appPort + '\'' +
+                ", appIndex='" + appIndex + '\'' +
+                ", appWebServlet=" + appWebServlet +
+                '}';
+    }
+
     public String getAppName() {
         return appName;
     }
