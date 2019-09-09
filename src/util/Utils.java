@@ -125,22 +125,6 @@ public class Utils {
         }
     }
 
-    public static boolean isFile(String suffix) {
-        switch (suffix) {
-            case "jpg":
-            case "jpeg":
-            case "png":
-            case "gif":
-            case "bmp":
-            case "tif":
-            case "webp":
-                return true;
-            default:
-                return false;
-        }
-
-    }
-
     public static String getHtmlErrorPage(String error) {
         return "<!DOCTYPE html>" +
                 "<html lang='en'>" +

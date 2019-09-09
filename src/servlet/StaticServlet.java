@@ -58,10 +58,8 @@ public class StaticServlet implements BaseServlet {
             } else if (suffix.equals("js")) {
                 response.setContentType("application/x-javascript");
                 response.getWriter().println(html);
-            } else if (Utils.isFile(suffix)) {
-                response.pushFile(new File(htmlPath));
             } else {
-                response.getWriter().println(html);
+                response.pushImage(new File(htmlPath), suffix);
             }
         } else {
             response.getWriter().println(Utils.readStaticSource(appRootpath + "/404.html"));
@@ -75,11 +73,11 @@ public class StaticServlet implements BaseServlet {
 
     @Override
     public void doPut(Request request, Response response) {
-        this.doGet(request,response);
+        this.doGet(request, response);
     }
 
     @Override
     public void doDelete(Request request, Response response) {
-        this.doGet(request,response);
+        this.doGet(request, response);
     }
 }
