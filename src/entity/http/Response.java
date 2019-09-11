@@ -11,6 +11,7 @@ public class Response {
     private PrintWriter writer;
     private PrintStream stream;
     private OutputStream outputStream;
+    private boolean controlOrigin = false;
 
     public Response(OutputStream writer) {
         this.outputStream = writer;
@@ -64,6 +65,14 @@ public class Response {
         return writer;
     }
 
+    public boolean isControlOrigin() {
+        return controlOrigin;
+    }
+
+    public void setControlOrigin(boolean controlOrigin) {
+        this.controlOrigin = controlOrigin;
+    }
+
     public OutputStream getOutputStream() {
         return outputStream;
     }
@@ -73,9 +82,16 @@ public class Response {
     }
 
     private String pushHeader() {
+        String accessControlAllowOrigin;
+        if (this.controlOrigin) {
+            accessControlAllowOrigin = "";
+        } else {
+            accessControlAllowOrigin = "Access-Control-Allow-Origin:*" + CRLF;
+        }
         return "HTTP/1.1" + BLANK + "200" + BLANK + "OK" + CRLF +
                 "Date:" + new Date() + CRLF +
                 "Server:WebService" + CRLF +
+                accessControlAllowOrigin +
                 "Connection:close" + CRLF +
                 "Content-Type:" + this.contentType + ";charset=UTF-8" + CRLF + CRLF;
     }

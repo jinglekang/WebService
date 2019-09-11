@@ -33,5 +33,13 @@
                 <url>/i</url>
             </mapping>
         </servlet>
+                <servlet>
+            <name>upload</name>
+            <class>UploadServlet</class>
+            <mapping>
+                <url>/upload</url>
+                <url>/u</url>
+            </mapping>
+        </servlet>
     </webapp>
 </webapps>
