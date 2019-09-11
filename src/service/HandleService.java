@@ -62,6 +62,8 @@ public class HandleService implements Runnable {
                         servlet.doPut(request, response);
                     } else if ("DELETE".equals(method)) {
                         servlet.doDelete(request, response);
+                    } else if ("OPTIONS".equals(method)) {
+                        response.getWriter().println();
                     } else {
                         response.getWriter().println(Utils.getHtmlErrorPage("Method Not Supported"));
                     }

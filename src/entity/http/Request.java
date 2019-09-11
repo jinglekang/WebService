@@ -34,7 +34,6 @@ public class Request {
 
     private void initRequest() {
         String request = this.readRequest(this.inputStream);
-        System.out.println(request);
         if (request != null) {
             String[] header = request.split("\n");
             String[] firstLine = header[0].split(" ");
@@ -81,6 +80,9 @@ public class Request {
                 break;
             case "DELETE":
                 System.out.println("DELETE请求暂未处理");
+                break;
+            case "OPTIONS":
+                System.out.println("OPTIONS请求暂未处理");
                 break;
             default:
                 System.out.println("不支持的请求方法：" + this.method);
